@@ -261,3 +261,68 @@ def plot_comp_volume_fraction_v3(data,readout_func):
     plt.legend()
     # Show plot
     plt.show()
+
+def plot_phases(phases):
+        phases = phases.fractions
+        
+        phases = phases.T
+        
+        num_phases = phases.shape[1]
+        num_comps = phases.shape[0]
+       
+        print(f"Num comps: {num_comps}")
+        print(f"Num Phase: {num_phases}")
+        x = np.arange(num_phases)
+        print(x)
+        phases_index = []
+        for i in range(num_phases ):
+            phases_index.append(f'Phases {i +1}')
+            
+        plt.figure()
+        bottom = np.zeros(num_phases)
+        for i in range(0,num_comps):
+            plt.bar(x, phases[i], label = f'Component {i + 1}', bottom = bottom)
+            bottom += phases[i]
+        
+        #plt.bar(x, phases[i], label = f'Componenet {i + 1}', bottom = phases[i-1])
+        
+        plt.title('Vol Fractions of Different Phases')
+        plt.xlabel('Phase')
+        plt.ylabel('Vol Fraction')
+        plt.ylim([0,1])
+        plt.xticks(x, phases_index)
+        plt.legend(title="Components", loc="upper right") 
+
+def plot_phases_vol_norm(phases):
+        volumes = phases.volumes
+        phases = phases.fractions
+        count = 0
+        for phase in phases:
+            phase = phase * volumes[count]
+            phases[count] = phase
+            count +=1
+        phases = phases.T
+        print(phases)
+        num_phases = phases.shape[1]
+        num_comps = phases.shape[0]
+        print(num_comps)
+        x = np.arange(num_phases)
+        print(x)
+        phases_index = []
+        for i in range(num_phases ):
+            phases_index.append(f'Phases {i +1}')
+        plt.figure()
+    
+        bottom = np.zeros(num_phases)
+        for i in range(num_comps):
+            plt.bar(x, phases[i], label = f'Component {i + 1}', bottom = bottom)
+            bottom += phases[i]
+        
+        #plt.bar(x, phases[i], label = f'Componenet {i + 1}', bottom = phases[i-1])
+        
+        plt.title('Vol Fractions of Different Phases Normalized')
+        plt.xlabel('Phase')
+        plt.ylabel('Vol Fraction')
+        plt.ylim([0,1])
+        plt.xticks(x, phases_index)
+        plt.legend(title="Components", loc="upper right") 
