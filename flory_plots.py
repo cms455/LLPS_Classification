@@ -225,3 +225,39 @@ def plot_comp_volume_fraction_v2(data,readout_func):
     plt.legend()
     # Show plot
     plt.show()
+
+
+
+def plot_comp_volume_fraction_v3(data,readout_func):
+    '''
+    Plots each of the components of the volume fraction as a scatter plot 
+    Data is a numpy array
+    '''
+    num_comps = data.shape[1]
+    num_of_points = data.shape[0]
+    norm_points = norm_points = np.linspace(0,1, num_of_points)
+
+    
+    # Customize the plot
+    plt.title('Plot of Component Volume Fractions')
+    plt.xlabel('Initial Phi_In')
+    plt.ylabel('Volume Fraction')
+    plt.ylim(0, 1)
+    
+    # Create scatter plot for the first set of y-values
+    for i in range(1,(num_comps)-2):
+        plt.scatter(norm_points, data[:,i], color='green', marker='o', label = f'Phi_H {i}')
+    plt.scatter(norm_points,data[:,0], color='blue', marker='o',label = 'Phi_In')
+    plt.scatter(norm_points, data[:,-2], color='red', marker='o', label = 'Phi_Out')
+    plt.scatter(norm_points, data[:,-1], color='yellow', marker='o', label = 'Phi_Sol')
+
+    output_comp_points = []
+    for point in data:
+        x = readout_func(point[-2],point[-1])
+        output_comp_points.append(x)
+    output_comp_points = np.array(output_comp_points)
+    plt.scatter(norm_points,output_comp_points, color = 'purple', marker='x')
+    plt.plot(norm_points,output_comp_points, color = 'purple', linewidth = 2.0, label = 'Readout Value')
+    plt.legend()
+    # Show plot
+    plt.show()
