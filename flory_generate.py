@@ -95,8 +95,22 @@ def most_dilute_flory(phase):
     return phase.fractions[dilute_phase_vol_index]
 
 
+
 def chi_matrix_w_sol(num_comps,chi_strength):
+    num_comps = num_comps -1
     chi_matrix = random_interaction_matrix(num_comps,chi_strength)
+    chi_matrix = np.vstack([chi_matrix,np.zeros(num_comps)])
+    zero_col = np.zeros(num_comps+1)
+    zero_col = zero_col[:, np.newaxis]
+    chi_matrix = np.hstack([chi_matrix,zero_col])
+    return chi_matrix
+
+def chi_matrix_strong_out(num_comps,num_out,chi_strength,out_chi_strength):
+    num_comps = num_comps -1
+    chi_matrix = random_interaction_matrix(num_comps,chi_strength)
+    out_chi_matrix = random_interaction_matrix(num_comps,out_chi_strength)
+    chi_matrix[:,num_comps - num_out:num_comps] = out_chi_matrix[:,num_comps - num_out:num_comps]
+    chi_matrix[num_comps - num_out:num_comps:] = out_chi_matrix[num_comps - num_out:num_comps:]
     chi_matrix = np.vstack([chi_matrix,np.zeros(num_comps)])
     zero_col = np.zeros(num_comps+1)
     zero_col = zero_col[:, np.newaxis]
